@@ -118,7 +118,7 @@ class Calculator(mixins.CalculatorMixin, base.BasePlugin):
 
     @cached_property
     def _embedding_calculator_tpu(self):
-        delegate_list = tf.lite.experimental.load_delegate(self.DELIGATES)
+        delegate_list = tf.lite.experimental.load_delegate('libedgetpu.so.1', options={"device": "pci:1"})
         model = tf.lite.Interpreter(
                                 model_path=self.ml_model_file,
                                 experimental_delegates=[delegate_list])

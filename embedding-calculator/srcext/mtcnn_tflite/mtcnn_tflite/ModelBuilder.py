@@ -40,7 +40,7 @@ class ModelBuilder:
         self.cache = FileCache('mtcnn-tflite-models')
         data_path = os.path.join(os.path.dirname(mtcnn_tflite.__file__), "data")
         self.weights_file = os.path.join(data_path, "mtcnn_weights.npy")
-        delegate_list = tf.lite.experimental.load_delegate('libedgetpu.so.1') 
+        delegate_list = tf.lite.experimental.load_delegate('libedgetpu.so.1', options={"device": "pci:1"})
         
         if "r_net" not in self.cache:
             r_net = self.build_rnet()
@@ -76,7 +76,7 @@ class ModelBuilder:
     def create_pnet(self, image_dimension):
         img_width, img_height = image_dimension
         scales = self.get_scales(self.min_face_size, img_width, img_height, self.scale_factor)
-        delegate_list = tf.lite.experimental.load_delegate('libedgetpu.so.1') #
+        delegate_list = tf.lite.experimental.load_delegate('libedgetpu.so.1', options={"device": "pci:1"}) #
         if str(image_dimension) not in self.cache:
             ctr = 0
             p_nets = []
